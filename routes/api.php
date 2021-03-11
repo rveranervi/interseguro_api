@@ -27,11 +27,11 @@ Route::post('/obtener_arreglo', function (Request $request) {
 	    }
 	    $arreglo[$i] = $fila;
     }
-    return serialize($arreglo);
+    return json_encode($arreglo);
 });
 
 Route::post('/reordenar_horario', function (Request $request) {
-    $arreglo = unserialize($request->arreglo);
+    $arreglo = json_decode($request->arreglo);
     $height = count($arreglo);
     $width = count($arreglo[0]);
     $arreglo90 = array();
@@ -41,11 +41,15 @@ Route::post('/reordenar_horario', function (Request $request) {
             $arreglo90[$height - $i - 1][$j] = $arreglo[$height - $j - 1][$i];
         }
     }
-    return serialize($arreglo90);
+    for ($i = 0; $i < $width; $i++) {
+        $arreglo90[$i] = array_values($arreglo90[$i]);
+    }
+    $arreglo90 = array_values($arreglo90);
+    return json_encode($arreglo90);
 });
 
 Route::post('/reordenar_antihorario', function (Request $request) {
-    $arreglo = unserialize($request->arreglo);
+    $arreglo = json_decode($request->arreglo);
     $height = count($arreglo);
     $width = count($arreglo[0]);
     $arreglo90 = array();
@@ -55,7 +59,11 @@ Route::post('/reordenar_antihorario', function (Request $request) {
             $arreglo90[$height - $i - 1][$j] = $arreglo[$height - $j - 1][$i];
         }
     }
-    return serialize($arreglo90);
+    for ($i = 0; $i < $width; $i++) {
+        $arreglo90[$i] = array_values($arreglo90[$i]);
+    }
+    $arreglo90 = array_values($arreglo90);
+    return json_encode($arreglo90);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

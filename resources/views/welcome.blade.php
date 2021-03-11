@@ -3,11 +3,13 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Laravel API</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
         <!-- Styles -->
         <style>
@@ -61,6 +63,12 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            .element{
+                float: left;
+            }
+            .fila{
+                display: grid;
+            }
         </style>
     </head>
     <body>
@@ -81,7 +89,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel API
+                    Consumo de API
                 </div>
 
                 <div class="links">
@@ -91,7 +99,35 @@
                         <b>/reordenar_antihorario</b> -> arreglo(INT): Retorna el arreglo ordenado en sentido ANTIHORARIO.<br>
                     </p>
                 </div>
+                <div id="app">
+                    <h1>Arreglo mostrado</h1>
+                    <p>
+                        Si cambia el valor numerico del campo input, podrá redimensionar el arreglo.
+                    </p>
+                  <section v-if="errored">
+                    <p>Lo sentimos, no es posible obtener la información en este momento, por favor intente nuevamente mas tarde</p>
+                  </section>
+
+                  <section v-else>
+                    <div v-if="loading">Cargando...</div>
+
+                    <div>
+                        <input v-model="dimensiones" placeholder="N° elementos por fila" v-on:change="load">
+                        <button v-on:click="rotate1">Rotar horario</button>
+                        <button v-on:click="rotate2">Rotar antihorario</button>
+                        <table border="1">
+                            <tr v-for="(arr, index) in arreglo">
+                                <td class="element" v-for="(ele, index) in arr">
+                                    <span>@{{ele}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                  </section>
+                </div>
             </div>
         </div>
+        <script src="{{ mix('js/app.js') }}" defer></script>
     </body>
 </html>
